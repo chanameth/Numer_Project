@@ -9,7 +9,7 @@ const PlotlyComponent = createPlotlyComponent(Plotly)
 var dataInTable = []
 var statusExample = 0
 var data = []
-var fxr = [] , fxl = []
+var nA = 1 , nB = 1 
 
 class GaussJordan extends Component
 { 
@@ -77,6 +77,8 @@ class GaussJordan extends Component
   }
     onSubmit()
   {
+    nA = 1
+    nB = 1
     if(statusExample === 0)
     {
       this.state.matrixA = []
@@ -103,18 +105,19 @@ class GaussJordan extends Component
         this.state.matrixB[k].push(parseFloat(convert[i]))
      }
     }
-     
+    var matrixA = this.state.matrixA
+    var matrixB = this.state.matrixB
      var calculateGaussJordan = this.state.matrixA
      var calculateGaussJordanB = this.state.matrixB
      for( i = 0 ; i < this.state.Row ; i ++)
      {
         for (var j = i ; j < this.state.Colum ; j ++)
         {
-          calculateGaussJordan = subset(calculateGaussJordan , index(i,j) , (subset(calculateGaussJordan,index(i,j))/subset(this.state.matrixA , index(i,i))))
+          calculateGaussJordan = subset(calculateGaussJordan , index(i,j) , (subset(calculateGaussJordan,index(i,j))/subset(matrixA , index(i,i))))
           //console.log("for j round i A",i+1 ," ",calculateCamersRule)
         }
           
-          calculateGaussJordanB = subset(calculateGaussJordanB , index(i,0) , (subset(calculateGaussJordanB,index(i,0))/subset(this.state.matrixA , (index(i,i)))))
+          calculateGaussJordanB = subset(calculateGaussJordanB , index(i,0) , (subset(calculateGaussJordanB,index(i,0))/subset(matrixA , (index(i,i)))))
           //console.log("for j round i B",i+1 ," ",calculateCamersRuleB)
           for (var k = i + 1 ; k <= this.state.Row - 1 ; k++)
         {
@@ -122,16 +125,16 @@ class GaussJordan extends Component
           for(var l = 0 ; l < this.state.Colum ; l++)
           { 
             //console.log("l :",l + 1)
-            calculateGaussJordan = subset(calculateGaussJordan , index(k  , l),(subset(this.state.matrixA , index(k , l)) - (subset(calculateGaussJordan,index(i  ,l)) * subset(this.state.matrixA , index(k  , i)))))
+            calculateGaussJordan = subset(calculateGaussJordan , index(k  , l),(subset(matrixA , index(k , l)) - (subset(calculateGaussJordan,index(i  ,l)) * subset(matrixA , index(k  , i)))))
             //console.log("A",calculateCamersRule)
           }
-            calculateGaussJordanB = subset(calculateGaussJordanB , index(k  , 0),(subset(this.state.matrixB , index(k,0)) - (subset(calculateGaussJordanB,index(i ,0)) * subset(this.state.matrixA , index(k , i))) ))
+            calculateGaussJordanB = subset(calculateGaussJordanB , index(k  , 0),(subset(matrixB , index(k,0)) - (subset(calculateGaussJordanB,index(i ,0)) * subset(matrixA , index(k , i))) ))
            //console.log("B",calculateCamersRuleB)
         }
-        this.state.matrixA = calculateGaussJordan
-        this.state.matrixB = calculateGaussJordanB
+        matrixA = calculateGaussJordan
+        matrixB = calculateGaussJordanB
      }
-     var x = [] , sum , cal;
+     var x = []
      for( i = 0 ; i < this.state.Row  ; i ++)
      {
         x[i] = 0;
@@ -143,23 +146,24 @@ class GaussJordan extends Component
        for ( j = i - 1 ; j >= 0; j --)
        {
            
-        this.state.matrixA = subset(this.state.matrixA , index(j , i) , (subset(this.state.matrixA , index(j , i)) - (subset(this.state.matrixA , index(i,i)) * subset(this.state.matrixA , index(j , i)))))
-        this.state.matrixB = subset(this.state.matrixB , index(j  , 0),( subset(this.state.matrixB , index(j , 0)) - (subset(this.state.matrixB, index(i ,0)) * subset(calculateGaussJordan, index(j , i)))))
+        matrixA = subset(matrixA , index(j , i) , (subset(matrixA , index(j , i)) - (subset(matrixA , index(i,i)) * subset(matrixA , index(j , i)))))
+        matrixB = subset(matrixB , index(j  , 0),( subset(matrixB , index(j , 0)) - (subset(matrixB, index(i ,0)) * subset(calculateGaussJordan, index(j , i)))))
         console.log(this.state.matrixB)
        }
-       x[i] = subset(this.state.matrixB , index(i  , 0)).toFixed(6)
+       x[i] = subset(matrixB , index(i  , 0)).toFixed(6)
      }
-       x[i] = subset(this.state.matrixB , index(i  , 0)).toFixed(6)
+       x[i] = subset(matrixB , index(i  , 0)).toFixed(6)
      statusExample = 0;
      this.setState({showTable:true,showMatrix:true})
      this.createTable(x)
   }
   onReset ()
   {
-      this.setState({matrixA:[],matrixB:[],Row:0,Colum:0,showTable:false})
+      this.setState({matrixA:[],matrixB:[],Row:0,Colum:0,showTable:false,showMatrix:false})
   }
   /* function เอาค่าที่หาได้ยัดลง Array dataIntable*/
   createTable(x) {
+    dataInTable = []
     for (var i = 0; i < x.length; i++) {
         dataInTable.push({
             i : i+1,
@@ -254,9 +258,10 @@ class GaussJordan extends Component
           </Form.Group>
           
 </Form>
+
+{/* แสดง ตารางค่าที่หามาได้*/}
 {this.state.showMatrix === true ? this.state.matrixA.map(matrix => <div><h1 className="text-white">{"A[" + nA++ + "]:" + matrix + " " + " "}</h1></div>)  : ''}
 {this.state.showMatrix === true ? this.state.matrixB.map(matrix => <div><h1 className="text-white">{"B[" + nB++ + "]:" + matrix + " " + " "}</h1></div>)  : ''}
-{/* แสดง ตารางค่าที่หามาได้*/}
 {this.state.showTable === true ? <Card
                         title={"Output"}
                         bordered={true}

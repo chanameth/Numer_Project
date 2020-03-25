@@ -9,7 +9,7 @@ const PlotlyComponent = createPlotlyComponent(Plotly)
 var dataInTable = []
 var statusExample = 0
 var data = []
-var fxr = [] , fxl = []
+//var fxr = [] , fxl = []
 var nA = 1 , nB = 1 
 class GaussEliminate extends Component
 { 
@@ -77,6 +77,8 @@ class GaussEliminate extends Component
   }
     onSubmit()
   {
+    nA = 1
+    nB = 1
     if(statusExample === 0)
     {
       this.state.matrixA = []
@@ -103,18 +105,19 @@ class GaussEliminate extends Component
         this.state.matrixB[k].push(parseFloat(convert[i]))
      }
     }
-     
+     var matrixA = this.state.matrixA
+     var matrixB = this.state.matrixB
      var calculateGaussEliminate = this.state.matrixA
      var calculateGaussEliminateB = this.state.matrixB
      for( i = 0 ; i < this.state.Row ; i ++)
      {
         for (var j = i ; j < this.state.Colum ; j ++)
         {
-          calculateGaussEliminate = subset(calculateGaussEliminate , index(i,j) , subset(calculateGaussEliminate,index(i,j))/subset(this.state.matrixA , index(i,i)))
+          calculateGaussEliminate = subset(calculateGaussEliminate , index(i,j) , subset(calculateGaussEliminate,index(i,j))/subset(matrixA , index(i,i)))
           //console.log("for j round i A",i+1 ," ",calculateGaussEliminate)
         }
           
-          calculateGaussEliminateB = subset(calculateGaussEliminateB , index(i,0) , subset(calculateGaussEliminateB,index(i,0))/subset(this.state.matrixA , (index(i,i))))
+          calculateGaussEliminateB = subset(calculateGaussEliminateB , index(i,0) , subset(calculateGaussEliminateB,index(i,0))/subset(matrixA , (index(i,i))))
          // console.log("for j round i B",i+1 ," ",calculateGaussEliminateB)
           for (var k = i + 1 ; k <= this.state.Row - 1 ; k++)
         {
@@ -122,14 +125,14 @@ class GaussEliminate extends Component
           for(var l = 0 ; l < this.state.Colum ; l++)
           { 
             //console.log("l :",l + 1)
-            calculateGaussEliminate = subset(calculateGaussEliminate , index(k  , l),(subset(this.state.matrixA , index(k , l)) - (subset(calculateGaussEliminate,index(i  ,l)) * subset(this.state.matrixA , index(k  , i)))))
+            calculateGaussEliminate = subset(calculateGaussEliminate , index(k  , l),(subset(matrixA , index(k , l)) - (subset(calculateGaussEliminate,index(i  ,l)) * subset(matrixA , index(k  , i)))))
            // console.log("A",calculateGaussEliminate)
           }
-          calculateGaussEliminateB = subset(calculateGaussEliminateB , index(k  , 0),(subset(this.state.matrixB , index(k,0)) - (subset(calculateGaussEliminateB,index(i ,0)) * subset(this.state.matrixA , index(k , i)))))
+          calculateGaussEliminateB = subset(calculateGaussEliminateB , index(k  , 0),(subset(matrixB , index(k,0)) - (subset(calculateGaussEliminateB,index(i ,0)) * subset(matrixA , index(k , i)))))
             //console.log("B",calculateGaussEliminateB)
         }
-        this.state.matrixA = calculateGaussEliminate
-        this.state.matrixB = calculateGaussEliminateB
+        matrixA = calculateGaussEliminate
+        matrixB = calculateGaussEliminateB
      }
      var x = [] , sum , cal;
      for( i = 0 ; i < this.state.Row  ; i ++)
@@ -142,12 +145,12 @@ class GaussEliminate extends Component
            console.log("i => ",i)
        for ( j = this.state.Colum - 1 ; j > i ; j --)
        {
-            console.log("index =>",subset(this.state.matrixA , index(i,j))," ","x[j] =>",x[j])
-            sum += (subset(this.state.matrixA , index(i,j)) * x[j])
+            console.log("index =>",subset(matrixA , index(i,j))," ","x[j] =>",x[j])
+            sum += (subset(matrixA , index(i,j)) * x[j])
             //subset(this.state.matrixB , index (i,0) - (subset(this.state.matrixA , index(i,j)) * x[i]))
        }
        console.log("sum = ",sum)
-       cal = ((subset(this.state.matrixB , index (i,0)) - sum) / subset(this.state.matrixA , index(i , i)))
+       cal = ((subset(matrixB , index (i,0)) - sum) / subset(matrixA , index(i , i)))
        if(cal === Infinity || cal === -Infinity || cal === NaN )
        {
          cal = 0;
@@ -161,7 +164,7 @@ class GaussEliminate extends Component
   }
   onReset ()
   {
-      this.setState({matrixA:[],matrixB:[],Row:0,Colum:0,showTable:false})
+      this.setState({matrixA:[],matrixB:[],Row:0,Colum:0,showTable:false,showMatrix:false})
   }
   /* function เอาค่าที่หาได้ยัดลง Array dataIntable*/
   createTable(x) {
@@ -176,7 +179,7 @@ class GaussEliminate extends Component
 }
       Graph(xl, xr)
       {
-            data = [
+            /*data = [
             {
               type: 'scatter',  
               x: xl,   
@@ -194,7 +197,7 @@ class GaussEliminate extends Component
               color: '#ffab00'
             },
             name:'XR'
-          }];
+          }];*/
           
         }
 

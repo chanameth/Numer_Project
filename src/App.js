@@ -16,7 +16,6 @@ import CramersRule from './Linear Algebaric/CramersRule';
 import GaussEliminate from './Linear Algebaric/GaussEliminate';
 import GaussJordan from './Linear Algebaric/GaussJordan';
 import LU from './Linear Algebaric/LU';
-import SplineIterpolation from './Interpoltaion and Extrapolation/SplineIterpolation';
 import NewtonsDividedDifferences from './Interpoltaion and Extrapolation/NewtonsDD';
 import LagrangePolynomials from './Interpoltaion and Extrapolation/LagrangePolynomials';
 import Trapezoidal from './Intergration Techniques/Trapezoidal';
@@ -93,9 +92,6 @@ class App extends React.Component {
                   }
                   {
                     this.state.pagestatus === "LU" ? <LU/> : ''
-                  }
-                  {
-                    this.state.pagestatus === "Spline-Iterpolation" ? <SplineIterpolation/> : ''
                   }
                   {
                     this.state.pagestatus === "NewtonsDividedDifferences" ? <NewtonsDividedDifferences/> : ''

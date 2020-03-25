@@ -9,8 +9,8 @@ const PlotlyComponent = createPlotlyComponent(Plotly)
 var dataInTable = []
 var statusExample = 0
 var data = []
-var fxr = [] , fxl = []
-
+//var fxr = [] , fxl = []
+var nA = 1 , nB = 1 
 class LU extends Component
 { 
   constructor()
@@ -18,8 +18,6 @@ class LU extends Component
     super();
     this.state={function:" ",Xr:0,Xl:0,X:0,stringmatrixA:"",stringmatrixB:"",matrixA:[],matrixB:[],ans:[],Row:0,Colum:0,showGrap:false,showTable:false}
     this.onChangefunction = this.onChangefunction.bind(this)
-    this.onChangeVariableXr = this.onChangeVariableXr.bind(this)
-    this.onChangeVariableXl = this.onChangeVariableXl.bind(this)
     this.onChangeColum= this.onChangeColum.bind(this)
     this.onChangeRow = this.onChangeRow.bind(this)
     this.onChangeMatrixA = this.onChangeMatrixA.bind(this)
@@ -33,7 +31,7 @@ class LU extends Component
     await api.getFunctionByName("LU").then(db => {
     this.setState({
         matrixA:db.data.data.matrixA,
-        matrixB:db.data.data.matrixB,
+        matrixB:db.data.data.matrixB
     })
     })
     this.state.Row = 3
@@ -62,14 +60,6 @@ class LU extends Component
     this.setState({function:func.target.value})
     console.log(this.state.function);
   }
-  onChangeVariableXr  = (event) =>
-  {
-      this.setState({Xr:event.target.value})
-  }
-  onChangeVariableXl = (event) =>
-  {
-    this.setState({Xl : event.target.value})
-  }
   onExample()
   {
      statusExample = 1;
@@ -77,11 +67,15 @@ class LU extends Component
   }
     onSubmit()
   {
+    console.log(this.state.matrixB)
+    nA = 1
+    nB = 1
     if(statusExample === 0)
     {
       this.state.matrixA = []
       this.state.matrixB = []
       var convert = this.state.stringmatrixA.split(' ')
+
       for(var i = 0,k = -1 ; i < convert.length ; i++)
      {
         if(i % this.state.Colum === 0)
@@ -103,12 +97,14 @@ class LU extends Component
         this.state.matrixB[k].push(parseFloat(convert[i]))
      }
     }
-    var Y = [0,0,0] , X = [0,0,0] , L = [] , U = [] , B = this.state.matrixB
+
+    var Y = [0,0,0] , X = [0,0,0] , L = [] , U = [] 
+    var matrixA = this.state.matrixA
+    var matrixB = this.state.matrixB 
     for( var i = 0,k = -1 ; i < (this.state.Row*this.state.Colum) ; i++)
      {
         if(i % this.state.Colum === 0)
         {
-            console.log(i)
             k++
             L[k] = []
             U[k] = []
@@ -116,8 +112,6 @@ class LU extends Component
         L[k].push(0)
         U[k].push(0)
      }
-     console.log(L)
-     console.log(U)
      for( i = 0 ; i < this.state.Row ; i ++)
      {
       for (var j = 0 ; j < this.state.Row ; j ++)
@@ -128,11 +122,11 @@ class LU extends Component
         }
         else if(i < j)
         {
-          U = subset(U , index(i,j) , (subset(this.state.matrixA,index(i,j))))
+          U = subset(U , index(i,j) , (subset(matrixA,index(i,j))))
         }
         if(j <= i)
         {
-          L = subset(L , index(i,j) , (subset(this.state.matrixA,index(i,j))))
+          L = subset(L , index(i,j) , (subset(matrixA,index(i,j))))
         }
       }
      }
@@ -146,10 +140,7 @@ class LU extends Component
               }
               else{
                   if(j!==i){
-                    if(i == 2 && k == 2)
-                    {
-                      console.log(L[k][j] + "*" + U[j][i])
-                    }
+              
                      L = subset(L , index(k,i) , ((subset(L,index(k,i)) - (subset(L,index(k,j)) * subset(U,index(j,i))))))
                   
                       
@@ -166,10 +157,9 @@ class LU extends Component
   console.log(L)
   console.log(U)
   for(i=0;i<this.state.Row;i++){
-      Y[i] = (B[i] / L[i][i]).toFixed(6)
+      Y[i] = (matrixB[i] / L[i][i]).toFixed(6)
       for(j=i+1;j<this.state.Row;j++){
-        console.log(L[j][i] + "*" + Y[i])
-        B[j] -= L[j][i] * Y[i];
+        matrixB[j] -= L[j][i] * Y[i];
       }
   }
   console.log(Y)
@@ -179,7 +169,6 @@ class LU extends Component
           Y[j] -= U[j][i] * X[i];
       }
   }
-  console.log(X)
      statusExample = 0;
      this.setState({showTable:true})
      this.createTable(X)
@@ -190,17 +179,17 @@ class LU extends Component
   }
   /* function เอาค่าที่หาได้ยัดลง Array dataIntable*/
   createTable(x) {
+    dataInTable = []
     for (var i = 0; i < x.length; i++) {
         dataInTable.push({
             i : i+1,
             x : x[i]
         });
     }
-    console.log(this.state.matrixB)
 }
       Graph(xl, xr)
       {
-            data = [
+            /*data = [
             {
               type: 'scatter',  
               x: xl,   
@@ -218,7 +207,7 @@ class LU extends Component
               color: '#ffab00'
             },
             name:'XR'
-          }];
+          }];*/
           
         }
 
@@ -274,7 +263,7 @@ class LU extends Component
                   <h2 className="text-white">matrixB</h2>
                   </Form.Label>
                   <Col sm="2">
-                     <Form.Control type="text"   placeholder={"MatrixB " + "|" + " " + "9,0,-4"} onChange={this.onChangeMatrixB}/>
+                    <Form.Control type="text"   placeholder={"MatrixB " + "|" + " " + "9,0,-4"} onChange={this.onChangeMatrixB}/>
                   </Col>
                   <Form.Group as={Col} controlId="matrix">
                   <div>
@@ -285,7 +274,6 @@ class LU extends Component
           </Form.Group>
           
 </Form>
-
 {/* แสดง ตารางค่าที่หามาได้*/}
 {this.state.showTable === true ? <Card
                         title={"Output"}

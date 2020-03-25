@@ -103,7 +103,7 @@ function Navbar_ant(props) {
               <Menu.Item key="28" onClick={() => props.parentCallback('BackwardDiviedDifferentialh2')}><span><Icon type={design.type} theme={design.theme}  twoToneColor={design.twoToneColor}/>Backward Divied Differential(h^2)</span></Menu.Item>
               <Dropdown.Divider/>
               <Menu.Item key="29" onClick={() => props.parentCallback('CentralDiviedDifferentialh2')}><span><Icon type={design.type} theme={design.theme}  twoToneColor={design.twoToneColor}/>Central Divied Differential(h^2)</span></Menu.Item>
-              <Menu.Item key="30" onClick={() => props.parentCallback('CentalDiviedDifferentialh4')}><span><Icon type={design.type} theme={design.theme}  twoToneColor={design.twoToneColor}/>Central Divied Differential(h^4)</span></Menu.Item>
+              <Menu.Item key="30" onClick={() => props.parentCallback('CentralDiviedDifferentialh4')}><span><Icon type={design.type} theme={design.theme}  twoToneColor={design.twoToneColor}/>Central Divied Differential(h^4)</span></Menu.Item>
             </SubMenu>
 
 
