@@ -254,7 +254,8 @@ class GaussJordan extends Component
           </Form.Group>
           
 </Form>
-
+{this.state.showMatrix === true ? this.state.matrixA.map(matrix => <div><h1 className="text-white">{"A[" + nA++ + "]:" + matrix + " " + " "}</h1></div>)  : ''}
+{this.state.showMatrix === true ? this.state.matrixB.map(matrix => <div><h1 className="text-white">{"B[" + nB++ + "]:" + matrix + " " + " "}</h1></div>)  : ''}
 {/* แสดง ตารางค่าที่หามาได้*/}
 {this.state.showTable === true ? <Card
                         title={"Output"}
