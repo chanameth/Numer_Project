@@ -26,7 +26,7 @@ class BackwardDiviedDifferentialh2 extends Component
     componentDidMount = async() => { 
         await api.getFunctionByName("BackwardDiviedDifferentialh2").then(db => {
         this.setState({
-            fx:db.data.data.fx,
+            function:db.data.data.fx,
             x:db.data.data.x,
             h:db.data.data.h,
             Differential:db.data.data.n
