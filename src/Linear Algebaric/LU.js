@@ -274,7 +274,7 @@ class LU extends Component
                   <h2 className="text-white">matrixB</h2>
                   </Form.Label>
                   <Col sm="2">
-                    <Form.Control type="text"   placeholder={"MatrixB " + "|" + " " + this.state.matrixB} onChange={this.onChangeMatrixB}/>
+                     <Form.Control type="text"   placeholder={"MatrixB " + "|" + " " + "9,0,-4"} onChange={this.onChangeMatrixB}/>
                   </Col>
                   <Form.Group as={Col} controlId="matrix">
                   <div>
