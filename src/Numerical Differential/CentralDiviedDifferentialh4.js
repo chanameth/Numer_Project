@@ -179,6 +179,7 @@ class CentralDiviedDifferentialh4 extends Component
   /* function เอาค่าที่หาได้ยัดลง Array dataIntable*/
   createTable(xcal,xreal,exprreal) 
   {
+    dataInTable = []
     for (var i = 0; i < xcal.length; i++) {
         dataInTable.push({
             i : i+1,
