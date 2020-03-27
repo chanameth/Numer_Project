@@ -1,7 +1,6 @@
 import React ,{ useState }from "react";
-import { Layout, Menu, Breadcrumb, Icon , Alert  } from 'antd';
+import { Layout, Menu } from 'antd';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Route,Switch,BrowserRouter} from 'react-router-dom';
 import {Row} from 'react-bootstrap';
 import LogoImage from './image_background/Background.jpg';
 import HeaderImage from './logo/Cuppy.jpg';
@@ -28,8 +27,7 @@ import BackwardDiviedDifferentialh from './Numerical Differential/BackwardDivied
 import BackwardDiviedDifferentialh2 from './Numerical Differential/BackwardDiviedDifferentialh2';
 import CentralDiviedDifferentialh2 from './Numerical Differential/CentralDiviedDifferentialh2';
 import CentralDiviedDifferentialh4 from './Numerical Differential/CentralDiviedDifferentialh4';
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
+const { Header} = Layout;
 
 class App extends React.Component {
   constructor(props)
